@@ -14,7 +14,6 @@
   :main ^:skip-aot twitter.core
   :resource-paths ["src/resources"]
   :plugins [[lein-environ "1.1.0"]]
-  :profiles {:uberjar {:aot :all
-                       :uberjar-name "twitter.jar" } 
+  :profiles {:uberjar {:aot :all} 
              :dev {:dependencies [[midje "1.6.3"]]
                    :resource-paths ["test/resources"]}})

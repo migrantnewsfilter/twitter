@@ -18,7 +18,7 @@
     (recur)))
 
 (defn writer [conn ch exch]
-  (doseq [n (range 10)] ;; 10-thread writer! Adjustable? 
+  (doseq [n (range 10)] ;; 10-thread writer! Adjustable?
     (go-loop []
       (try
         (db/write-to-db conn (<! ch))
@@ -33,14 +33,16 @@
     (catch Exception e (>!! exch e))))
 
 (defn -main [& args]
+
   ;; Monger creates its own pool so we let it manage its own
   ;; reconnects and threadpool.
+  (log/debug (str "Connecting to Mongo URL: " (env :mongo-url)))
   (let [db-conn (db/connect-to-db (env :mongo-url))
         terms (db/get-terms db-conn)]
     (loop []
 
-      ;; For everything else, we restart everything on an error. 
-      (log/info (str "Starting Main Process with terms: " terms))
+      ;; For everything else, we restart everything on an error.
+      (log/debug (str "Starting Main Process with terms: " terms))
       (let [queue (create-queue 1000)
             exch (chan)
             ch (chan)

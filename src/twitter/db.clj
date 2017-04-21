@@ -4,7 +4,7 @@
             [cheshire.core :refer [parse-string]]
             [environ.core :refer [env]]))
 
-(defn connect-to-db [path] (mg/connect path))
+(defn connect-to-db [host] (mg/connect {:host host}))
 (defn disconnect-db [conn] (mg/disconnect conn))
 
 (defn get-terms [conn]

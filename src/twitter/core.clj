@@ -36,8 +36,8 @@
 
   ;; Monger creates its own pool so we let it manage its own
   ;; reconnects and threadpool.
-  (log/debug (str "Connecting to Mongo URL: " (env :mongo-url)))
-  (let [db-conn (db/connect-to-db (env :mongo-url))
+  (log/debug (str "Connecting to Mongo URL: " (env :mongo-host)))
+  (let [db-conn (db/connect-to-db (env :mongo-host))
         terms (db/get-terms db-conn)]
     (loop []
 

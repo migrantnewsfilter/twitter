@@ -4,7 +4,7 @@
             [cheshire.core :refer [parse-string]]
             [environ.core :refer [env]]))
 
-(defn connect-to-db [host] (mg/connect {:host hosto}))
+(defn connect-to-db [host] (mg/connect {:host host}))
 (defn disconnect-db [conn] (mg/disconnect conn))
 
 ;; TODO: we've hardcoded the DB structure here!! Get this from config!
@@ -13,7 +13,7 @@
     (get-in (mc/find-by-id db "terms" "twitter") ["feeds"])))
 
 (defn format-entry [body user id date]
-  {:_id idn
+  {:_id id
    :published date
    :added (java.util.Date.)
    :content {:link (str "https://twitter.com/" user "/status/" id)

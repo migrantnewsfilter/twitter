@@ -21,7 +21,9 @@
   (doseq [n (range 10)] ;; 10-thread writer! Adjustable?
     (go-loop []
       (try
-        (db/write-to-db conn (<! ch))
+        (do
+          (log/info "Writing tweet to DB")
+          (db/write-to-db conn (<! ch)))
         (catch Exception e (>! exch e)))
       (recur))))
 

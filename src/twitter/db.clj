@@ -4,15 +4,16 @@
             [cheshire.core :refer [parse-string]]
             [environ.core :refer [env]]))
 
-(defn connect-to-db [host] (mg/connect {:host host}))
+(defn connect-to-db [host] (mg/connect {:host hosto}))
 (defn disconnect-db [conn] (mg/disconnect conn))
 
+;; TODO: we've hardcoded the DB structure here!! Get this from config!
 (defn get-terms [conn]
   (let [db (mg/get-db conn "newsfilter")]
-    (get-in (mc/find-by-id db "terms" "twitter") ["keywords"])))
+    (get-in (mc/find-by-id db "terms" "twitter") ["feeds"])))
 
 (defn format-entry [body user id date]
-  {:_id id
+  {:_id idn
    :published date
    :added (java.util.Date.)
    :content {:link (str "https://twitter.com/" user "/status/" id)

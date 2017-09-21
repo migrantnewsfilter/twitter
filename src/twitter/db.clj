@@ -7,6 +7,14 @@
 (defn connect-to-db [host] (mg/connect {:host host}))
 (defn disconnect-db [conn] (mg/disconnect conn))
 
+(defn make-id [id] (str "tw:" id))
+(defn get-status [json] (parse-string json true))
+(defn get-user [status] (get-in status [:user :screen_name]))
+(defn get-body [status] (:text status))
+(defn get-date [status]
+  (let [date-format (java.text.SimpleDateFormat. "EEE MMM dd HH:mm:ss Z yyyy")]
+    (.parse  date-format (:created_at status))))
+
 ;; TODO: we've hardcoded the DB structure here!! Get this from config!
 (defn get-terms [conn]
   (let [db (mg/get-db conn "newsfilter")]
@@ -19,15 +27,6 @@
    :content {:link (str "https://twitter.com/" user "/status/" id)
              :author user
              :body body }})
-
-(defn make-id [id] (str "tw:" id))
-(defn get-status [json] (parse-string json true))
-(defn get-user [status] (get-in status [:user :screen_name]))
-(defn get-body [status] (:text status))
-
-(defn get-date [status]
-  (let [date-format (java.text.SimpleDateFormat. "EEE MMM dd HH:mm:ss Z yyyy")]
-    (.parse  date-format (:created_at status))))
 
 (defn prepare-entry [json]
   (let [status (get-status json)]

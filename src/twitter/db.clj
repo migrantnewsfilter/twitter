@@ -13,16 +13,16 @@
     (get-in (mc/find-by-id db "terms" "twitter") ["feeds"])))
 
 (defn format-entry [body user id date]
-  {:_id id
+  {:_id (make-id id)
    :published date
    :added (java.util.Date.)
    :content {:link (str "https://twitter.com/" user "/status/" id)
              :author user
              :body body }})
 
+(defn make-id [id] (str "tw:" id))
 (defn get-status [json] (parse-string json true))
 (defn get-user [status] (get-in status [:user :screen_name]))
-(defn get-id [status] (str "tw:" (:id status)))
 (defn get-body [status] (:text status))
 
 (defn get-date [status]
@@ -32,7 +32,7 @@
 (defn prepare-entry [json]
   (let [status (get-status json)]
     (try
-      (format-entry (get-body status) (get-user status) (get-id status) (get-date status))
+      (format-entry (get-body status) (get-user status) (:id status) (get-date status))
       (catch Exception e (throw (ex-info (.getMessage e) {:cause :parsing}))))))
 
 (defn write-to-db
